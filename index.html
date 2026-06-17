@@ -894,7 +894,7 @@ let startWorld=function(){};
   coreWire=new THREE.Mesh(coreGeo,wireMat); coreWire.scale.setScalar(1.04); scene.add(coreWire);
   // soft glow halo behind core
   const gm=new THREE.SpriteMaterial({map:texGlow,color:0x3f7bff,transparent:true,opacity:.85,blending:THREE.AdditiveBlending,depthWrite:false});
-  glowSprite=new THREE.Sprite(gm); glowSprite.scale.setScalar(360); glowSprite.position.z=-20; scene.add(glowSprite);
+  glowSprite=new THREE.Sprite(gm); glowSprite.scale.setScalar(320); glowSprite.position.z=-40; scene.add(glowSprite);
 
   /* ---- NEURAL NODE CLOUD ---- */
   nodeGroup=new THREE.Group(); scene.add(nodeGroup);
@@ -976,10 +976,10 @@ let startWorld=function(){};
       coreWire.rotation.copy(core.rotation);
       const driftX = Math.sin(wp*Math.PI*2)*140*MO;
       const driftY = -wp*60;
-      core.position.set(driftX, driftY, lerp(0,-40,ep));
+      core.position.set(driftX, driftY+58, lerp(0,-40,ep));
       coreWire.position.copy(core.position);
-      glowSprite.position.set(driftX, driftY, core.position.z-20);
-      const s=lerp(1,0.62,ep); core.scale.set(s,s,s); coreWire.scale.set(s*1.04,s*1.04,s*1.04);
+      glowSprite.position.set(driftX, driftY+58, core.position.z-30);
+      const s=lerp(0.9,0.58,ep); core.scale.set(s,s,s); coreWire.scale.set(s*1.04,s*1.04,s*1.04);
       coreUniforms.uOpacity.value=lerp(1.0,0.16,ep);
       glowSprite.material.opacity=lerp(0.85,0.2,ep);
     }
