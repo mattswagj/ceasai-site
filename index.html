@@ -665,7 +665,6 @@ let worldProgress = 0; // 0..1 scroll progress for camera
 /* PRELOADER */
 (function(){
   const pl=document.getElementById('preloader'), bar=document.getElementById('plBar'), pct=document.getElementById('plPct');
-  if(reduceMotion){ pl&&pl.classList.add('done'); return; }
   let p=0;
   const tick=setInterval(()=>{
     p+=Math.random()*15+6; if(p>100)p=100;
@@ -767,7 +766,7 @@ if(!reduceMotion && window.gsap && window.ScrollTrigger){
 }
 
 /* 3D TILT on cards */
-if(!isTouch && !reduceMotion){
+if(!isTouch){
   const tiltEls=document.querySelectorAll('.card,.vert,.step,.mock,.testimonial,.about-card,.stat');
   tiltEls.forEach(el=>{
     el.addEventListener('mousemove',e=>{
@@ -781,7 +780,7 @@ if(!isTouch && !reduceMotion){
 }
 
 /* MAGNETIC buttons */
-if(!isTouch && !reduceMotion){
+if(!isTouch){
   document.querySelectorAll('.btn').forEach(btn=>{
     btn.addEventListener('mousemove',e=>{
       const r=btn.getBoundingClientRect();
@@ -822,7 +821,7 @@ document.getElementById('leadForm').addEventListener('submit',function(e){
    ========================================================= */
 let startWorld=function(){};
 (function(){
-  if(reduceMotion || !window.THREE){ const pl=document.getElementById('preloader'); pl&&pl.classList.add('done'); return; }
+  if(!window.THREE){ const pl=document.getElementById('preloader'); pl&&pl.classList.add('done'); return; }
   const canvas=document.getElementById('scene');
   let renderer,scene,camera,raf,running=false;
   let core,coreWire,glowSprite,nodeGroup,nodePoints,nodeLines,stars,lightA,lightB;
@@ -838,6 +837,7 @@ let startWorld=function(){};
   scene.fog=new THREE.FogExp2(0x05070d, 0.0016);
   camera=new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.1, 3000);
   camera.position.set(0,0,360);
+  const MO=reduceMotion?0.4:1; // soften motion for reduced-motion users
 
   lightA=new THREE.PointLight(0xFDE047,1.1,1400); lightA.position.set(180,120,200); scene.add(lightA);
   lightB=new THREE.PointLight(0x1E64FF,1.3,1400); lightB.position.set(-200,-80,160); scene.add(lightB);
@@ -972,9 +972,9 @@ let startWorld=function(){};
 
     // core motion: rotate + drift to the side as you scroll into content
     if(core){
-      core.rotation.y+=0.0025; core.rotation.x=mouse.y*0.3; core.rotation.z=mouse.x*0.15;
+      core.rotation.y+=0.0025*MO+0.0008; core.rotation.x=mouse.y*0.3; core.rotation.z=mouse.x*0.15;
       coreWire.rotation.copy(core.rotation);
-      const driftX = Math.sin(wp*Math.PI*2)*140;
+      const driftX = Math.sin(wp*Math.PI*2)*140*MO;
       const driftY = -wp*60;
       core.position.set(driftX, driftY, lerp(0,-40,ep));
       coreWire.position.copy(core.position);
@@ -983,7 +983,7 @@ let startWorld=function(){};
       coreUniforms.uOpacity.value=lerp(1.0,0.16,ep);
       glowSprite.material.opacity=lerp(0.85,0.2,ep);
     }
-    if(nodeGroup){nodeGroup.rotation.y+=0.0011; nodeGroup.rotation.x=mouse.y*0.12+wp*0.4; nodeGroup.position.x=Math.sin(wp*Math.PI*2+1.5)*120; nodeGroup.position.y=-wp*40;}
+    if(nodeGroup){nodeGroup.rotation.y+=0.0011*MO+0.0003; nodeGroup.rotation.x=mouse.y*0.12+wp*0.4; nodeGroup.position.x=Math.sin(wp*Math.PI*2+1.5)*120; nodeGroup.position.y=-wp*40;}
     if(stars){stars.rotation.y+=0.0003; stars.rotation.x=mouse.y*0.04;}
 
     // orbiting lights
@@ -991,9 +991,9 @@ let startWorld=function(){};
     lightB.position.set(Math.cos(clock.t*0.4+3.14)*240, -90, Math.sin(clock.t*0.4+3.14)*220);
 
     // CAMERA: dolly through space on scroll + mouse parallax
-    const camZ=lerp(360,760,ep);
-    const camX=Math.sin(wp*Math.PI*1.4)*90 + mouse.x*40;
-    const camY=lerp(0,-120,ep) + mouse.y*26;
+    const camZ=lerp(360, reduceMotion?480:760, ep);
+    const camX=Math.sin(wp*Math.PI*1.4)*(reduceMotion?22:90) + mouse.x*40;
+    const camY=lerp(0, reduceMotion?-34:-120, ep) + mouse.y*26;
     camera.position.set(camX,camY,camZ);
     camera.lookAt(core?core.position.x*0.4:0, core?core.position.y*0.5:0, 0);
     scene.fog.density=lerp(0.0016,0.0026,ep);
