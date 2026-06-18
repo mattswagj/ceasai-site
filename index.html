@@ -369,14 +369,15 @@ let worldProgress=0, splitProgress=0;
 (function(){
   const ld=document.getElementById('loader'), bar=document.getElementById('ldBar'), pct=document.getElementById('ldPct');
   document.documentElement.classList.add('lenis-stopped');
-  let p=0; const dur=reduceMotion?900:2100, t0=performance.now();
-  function step(t){
-    const k=Math.min(1,(t-t0)/dur); p=Math.round(k*100);
+  const dur=reduceMotion?1100:1700, t0=performance.now(); let finished=false;
+  function finish(){ if(finished)return; finished=true; clearInterval(iv);
+    bar.style.width='100%'; pct.textContent='100';
+    ld.classList.add('done'); document.documentElement.classList.remove('lenis-stopped');
+    try{startWorld();}catch(e){} if(window.ScrollTrigger){ScrollTrigger.refresh();} }
+  const iv=setInterval(()=>{ const k=Math.min(1,(performance.now()-t0)/dur), p=Math.round(k*100);
     bar.style.width=p+'%'; pct.textContent=String(p).padStart(2,'0');
-    if(k<1){requestAnimationFrame(step);}
-    else{ setTimeout(()=>{ ld.classList.add('done'); document.documentElement.classList.remove('lenis-stopped'); startWorld(); if(window.ScrollTrigger){ScrollTrigger.refresh();} }, reduceMotion?150:450); }
-  }
-  requestAnimationFrame(step);
+    if(k>=1){clearInterval(iv); setTimeout(finish,reduceMotion?160:340);} },60);
+  setTimeout(finish, 2600); /* hard cap: loader never lingers */
 })();
 
 /* ---------- LENIS (slow, deliberate glide) ---------- */
