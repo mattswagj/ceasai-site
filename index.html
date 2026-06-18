@@ -893,7 +893,7 @@ let startWorld=function(){};
       gl_Position = projectionMatrix*viewMatrix*wp;
     }`;
   const frag=`
-    precision mediump float;
+    precision highp float;
     uniform float uOpacity; uniform float uTime;
     uniform vec3 uBase; uniform vec3 uBlue; uniform vec3 uGold; uniform vec3 uViolet;
     varying float vN; varying vec3 vNW; varying vec3 vVD;
