@@ -788,22 +788,24 @@ if(!isTouch && !reduceMotion){
 })();
 
 /* GSAP CHOREOGRAPHY */
-if(!reduceMotion && window.gsap && window.ScrollTrigger){
+if(window.gsap && window.ScrollTrigger){
   gsap.registerPlugin(ScrollTrigger);
-  // Pinned hero: scroll-scrub the robot split (reassembles on scroll up)
+  // Pinned hero: scroll-scrub the robot split — runs for EVERYONE (gentler under reduce-motion)
   ScrollTrigger.create({trigger:'#hero',start:'top top',end:'+=140%',pin:true,pinSpacing:true,
-    scrub:reduceMotion?0.5:1, anticipatePin:1,
+    scrub:reduceMotion?0.6:1, anticipatePin:1,
     onUpdate:self=>{ splitProgress=self.progress; }});
-  // master scroll -> worldProgress (smooth scrubbed) for the 3D camera
+  // fade hero text as the robot splits
+  gsap.to('#hero .wrap',{y:-46,opacity:0,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'+=52%',scrub:true}});
+  // master scroll -> worldProgress (progress bar)
   gsap.to({}, {scrollTrigger:{trigger:'body',start:'top top',end:'bottom bottom',scrub:1.1,
     onUpdate:self=>{worldProgress=self.progress;}}});
-  // 3D heading entrances
-  gsap.utils.toArray('.h-sec').forEach(h=>{
-    gsap.from(h,{rotationX:-45,y:60,z:-120,opacity:0,transformOrigin:'50% 100%',duration:1.1,ease:'power3.out',
-      scrollTrigger:{trigger:h,start:'top 88%'}});
-  });
-  gsap.fromTo('#mock',{y:60,rotationY:8},{y:-30,rotationY:-4,ease:'none',scrollTrigger:{trigger:'#protiq',start:'top bottom',end:'bottom top',scrub:1}});
-  gsap.to('#hero .wrap',{y:-46,opacity:0,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'+=52%',scrub:true}});
+  if(!reduceMotion){
+    gsap.utils.toArray('.h-sec').forEach(h=>{
+      gsap.from(h,{rotationX:-45,y:60,z:-120,opacity:0,transformOrigin:'50% 100%',duration:1.1,ease:'power3.out',
+        scrollTrigger:{trigger:h,start:'top 88%'}});
+    });
+    gsap.fromTo('#mock',{y:60,rotationY:8},{y:-30,rotationY:-4,ease:'none',scrollTrigger:{trigger:'#protiq',start:'top bottom',end:'bottom top',scrub:1}});
+  }
 }
 
 /* 3D TILT on cards */
