@@ -70,11 +70,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* ===== MENU overlay ===== */
 #menu{position:fixed;inset:0;z-index:99;background:rgba(7,11,20,.96);backdrop-filter:blur(18px);display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,8vw,120px);opacity:0;visibility:hidden;transition:.6s var(--ease)}
 #menu.open{opacity:1;visibility:visible}
-#menu a{display:flex;align-items:baseline;gap:22px;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(34px,6vw,72px);color:var(--white);padding:6px 0;opacity:0;transform:translateY(26px);transition:.6s var(--ease);position:relative}
+#menu a{display:flex;align-items:baseline;gap:22px;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(24px,4.4vw,54px);color:var(--white);padding:3px 0;opacity:0;transform:translateY(26px);transition:.6s var(--ease);position:relative}
 #menu.open a{opacity:1;transform:none}
 #menu a .num{font-family:'Sora';font-weight:400;font-size:12px;letter-spacing:.2em;color:var(--gold);min-width:34px}
 #menu a:hover{color:var(--gold)}
-.menu-foot{position:absolute;bottom:clamp(28px,5vw,60px);left:clamp(40px,8vw,120px);right:clamp(40px,8vw,120px);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:12px;letter-spacing:.06em;flex-wrap:wrap}
+.menu-foot{margin-top:clamp(34px,7vh,70px);display:flex;gap:30px;color:var(--muted);font-size:12px;letter-spacing:.08em;flex-wrap:wrap}
 .menu-foot a{font-size:12px;font-family:'Sora'}
 
 /* progress + cursor */
@@ -181,6 +181,8 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
   .cur,.cur-dot{display:none}
   #loader{transition:opacity .4s}
 }
+
+  #hero .scrollcue{display:none}
 </style>
 </head>
 <body>
@@ -616,7 +618,7 @@ let startWorld=function(){};
     const idle=1-smooth(p*1.4);
     robot.rotation.y=(Math.sin(t*0.5)*0.12+mouse.x*0.25)*idle;
     robot.rotation.x=(mouse.y*0.10)*idle;
-    robot.position.y=10+Math.sin(t*1.2)*4*idle;
+    robot.position.y=-12+Math.sin(t*1.2)*4*idle;
     // eye pulse + antenna blink
     const pulse=1+Math.sin(t*3)*0.06; eyeL.scale.setScalar(pulse); eyeR.scale.setScalar(pulse);
     matTip.opacity=(0.65+0.35*Math.sin(t*4));
