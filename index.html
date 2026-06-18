@@ -1022,7 +1022,7 @@ let startWorld=function(){};
 
     core.rotation.y+=0.0025*MO+0.0008; core.rotation.x=mouse.y*0.3; core.rotation.z=mouse.x*0.15;
     coreWire.rotation.copy(core.rotation);
-    const heroAmt=Math.min(1,Math.max(0,1-camProg/0.14));
+    const heroAmt=Math.min(1,Math.max(0,1-(window.scrollY/(innerHeight*0.72))));
     const ox=lerp(310,0,heroAmt), oy=lerp(40,70,heroAmt), oz=lerp(-140,-10,heroAmt);
     core.position.set(ox,oy,oz);
     coreWire.position.copy(core.position);
