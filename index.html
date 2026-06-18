@@ -424,7 +424,6 @@
     </div>
     <div class="trust">
       <div class="row"><span class="dot"></span> Trusted by D1 Training — Metro Atlanta</div>
-      <div class="quote">"CeasAI helps us respond faster and book more leads without adding staff."</div>
     </div>
   </div>
   <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
@@ -990,7 +989,7 @@ let startWorld=function(){};
     const idle=1-smooth(p*1.4);
     robot.rotation.y=(Math.sin(t*0.5)*0.12+mouse.x*0.25)*idle;
     robot.rotation.x=(mouse.y*0.10)*idle;
-    robot.position.y=78+Math.sin(t*1.2)*4*idle;
+    robot.position.y=120+Math.sin(t*1.2)*4*idle;
     // eye pulse + antenna blink
     const pulse=1+Math.sin(t*3)*0.06; eyeL.scale.setScalar(pulse); eyeR.scale.setScalar(pulse);
     matTip.opacity=(0.65+0.35*Math.sin(t*4));
@@ -1019,14 +1018,14 @@ let startWorld=function(){};
     // CAMERA: fly forward through the gap (there), then pull back out (content)
     let cz;
     if(p<0.5) cz=lerp(360,120,smooth(p/0.5)); else cz=lerp(120,430,smooth((p-0.5)/0.5));
-    camera.position.x=mouse.x*30; camera.position.y=26+mouse.y*20; camera.position.z=cz;
-    camera.lookAt(0,34,0);
+    camera.position.x=mouse.x*30; camera.position.y=30+mouse.y*20; camera.position.z=cz;
+    camera.lookAt(0,46,0);
     scene.fog.density=lerp(0.0016,0.0034,bell);
 
     if(bloomOK){ try{ renderBloom(); }catch(e){ bloomOK=false; } }
     else { renderer.setRenderTarget(null); renderer.clear(); renderer.render(scene,camera); }
   }
-  function playIntro(){ if(window.gsap){ robot.scale.setScalar(0.01); gsap.to(robot.scale,{x:0.92,y:0.92,z:0.92,duration:1.6,ease:'elastic.out(1,0.65)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
+  function playIntro(){ if(window.gsap){ robot.scale.setScalar(0.01); gsap.to(robot.scale,{x:0.72,y:0.72,z:0.72,duration:1.6,ease:'elastic.out(1,0.65)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
   startWorld=function(){ if(running)return; running=true; playIntro(); animate(); };
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(running){raf=requestAnimationFrame(animate);}});
 })();
