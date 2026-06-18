@@ -872,7 +872,8 @@ let startWorld=function(){};
 
   const keyL=new THREE.PointLight(0xFFE9A6,1.25,1600); keyL.position.set(160,180,260); scene.add(keyL);
   const rimL=new THREE.PointLight(0x2E6BFF,1.5,1600); rimL.position.set(-220,-40,160); scene.add(rimL);
-  scene.add(new THREE.AmbientLight(0x40557f,0.7));
+  scene.add(new THREE.AmbientLight(0x5a6aa0,1.0));
+  const fillL=new THREE.PointLight(0xfff0cf,1.1,1600); fillL.position.set(0,70,330); scene.add(fillL);
 
   function radialTex(stops){const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');const gr=g.createRadialGradient(32,32,0,32,32,32);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);}
   const texCore=radialTex([[0,'rgba(255,255,255,1)'],[.25,'rgba(255,255,255,.9)'],[.55,'rgba(170,205,255,.4)'],[1,'rgba(0,0,0,0)']]);
@@ -881,7 +882,7 @@ let startWorld=function(){};
   const robot=new THREE.Group(); scene.add(robot);
   const leftG=new THREE.Group(), rightG=new THREE.Group(); robot.add(leftG,rightG);
   const fadeMats=[]; // robot materials to fade together
-  function gold(){ const m=new THREE.MeshStandardMaterial({color:0xE0A92E,metalness:0.92,roughness:0.26,emissive:0x4a3206,emissiveIntensity:0.55,transparent:true}); fadeMats.push(m); return m; }
+  function gold(){ const m=new THREE.MeshStandardMaterial({color:0xF4BB3E,metalness:0.45,roughness:0.32,emissive:0x8a5e12,emissiveIntensity:0.95,transparent:true}); fadeMats.push(m); return m; }
   const matGoldL=gold(), matGoldR=gold();
   const matFace=new THREE.MeshStandardMaterial({color:0x0a1430,metalness:0.5,roughness:0.5,emissive:0x0a1830,emissiveIntensity:0.4,transparent:true}); fadeMats.push(matFace);
   const matEye=new THREE.MeshBasicMaterial({color:0x7cc4ff,transparent:true}); fadeMats.push(matEye);
@@ -989,7 +990,7 @@ let startWorld=function(){};
     const idle=1-smooth(p*1.4);
     robot.rotation.y=(Math.sin(t*0.5)*0.12+mouse.x*0.25)*idle;
     robot.rotation.x=(mouse.y*0.10)*idle;
-    robot.position.y=18+Math.sin(t*1.2)*4*idle;
+    robot.position.y=78+Math.sin(t*1.2)*4*idle;
     // eye pulse + antenna blink
     const pulse=1+Math.sin(t*3)*0.06; eyeL.scale.setScalar(pulse); eyeR.scale.setScalar(pulse);
     matTip.opacity=(0.65+0.35*Math.sin(t*4));
@@ -1018,14 +1019,14 @@ let startWorld=function(){};
     // CAMERA: fly forward through the gap (there), then pull back out (content)
     let cz;
     if(p<0.5) cz=lerp(360,120,smooth(p/0.5)); else cz=lerp(120,430,smooth((p-0.5)/0.5));
-    camera.position.x=mouse.x*30; camera.position.y=18+mouse.y*20; camera.position.z=cz;
-    camera.lookAt(0,16,0);
+    camera.position.x=mouse.x*30; camera.position.y=26+mouse.y*20; camera.position.z=cz;
+    camera.lookAt(0,34,0);
     scene.fog.density=lerp(0.0016,0.0034,bell);
 
     if(bloomOK){ try{ renderBloom(); }catch(e){ bloomOK=false; } }
     else { renderer.setRenderTarget(null); renderer.clear(); renderer.render(scene,camera); }
   }
-  function playIntro(){ if(window.gsap){ robot.scale.setScalar(0.01); gsap.to(robot.scale,{x:1,y:1,z:1,duration:1.6,ease:'elastic.out(1,0.65)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
+  function playIntro(){ if(window.gsap){ robot.scale.setScalar(0.01); gsap.to(robot.scale,{x:0.92,y:0.92,z:0.92,duration:1.6,ease:'elastic.out(1,0.65)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
   startWorld=function(){ if(running)return; running=true; playIntro(); animate(); };
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(running){raf=requestAnimationFrame(animate);}});
 })();
