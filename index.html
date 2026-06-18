@@ -887,7 +887,7 @@ let startWorld=function(){};
   const texCore=radialTex([[0,'rgba(255,255,255,1)'],[.25,'rgba(255,255,255,.9)'],[.55,'rgba(170,205,255,.4)'],[1,'rgba(0,0,0,0)']]);
 
   /* ===================== ROBOT ===================== */
-  const robot=new THREE.Group(); scene.add(robot);
+  const robot=new THREE.Group(); scene.add(robot); robot.scale.setScalar(0.7);
   const leftG=new THREE.Group(), rightG=new THREE.Group(); robot.add(leftG,rightG);
   const fadeMats=[]; // robot materials to fade together
   function gold(){ const m=new THREE.MeshStandardMaterial({color:0xF4BB3E,metalness:0.45,roughness:0.32,emissive:0x8a5e12,emissiveIntensity:0.95,transparent:true}); fadeMats.push(m); return m; }
@@ -998,7 +998,7 @@ let startWorld=function(){};
     const idle=1-smooth(p*1.4);
     robot.rotation.y=(Math.sin(t*0.5)*0.12+mouse.x*0.25)*idle;
     robot.rotation.x=(mouse.y*0.10)*idle;
-    robot.position.y=30+Math.sin(t*1.2)*4*idle;
+    robot.position.y=42+Math.sin(t*1.2)*4*idle;
     // eye pulse + antenna blink
     const pulse=1+Math.sin(t*3)*0.06; eyeL.scale.setScalar(pulse); eyeR.scale.setScalar(pulse);
     matTip.opacity=(0.65+0.35*Math.sin(t*4));
@@ -1034,7 +1034,7 @@ let startWorld=function(){};
     if(bloomOK){ try{ renderBloom(); }catch(e){ bloomOK=false; } }
     else { renderer.setRenderTarget(null); renderer.clear(); renderer.render(scene,camera); }
   }
-  function playIntro(){ if(window.gsap){ robot.scale.setScalar(0.01); gsap.to(robot.scale,{x:0.92,y:0.92,z:0.92,duration:1.6,ease:'elastic.out(1,0.65)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
+  function playIntro(){ if(window.gsap){ gsap.fromTo(robot.scale,{x:0.45,y:0.45,z:0.45},{x:0.7,y:0.7,z:0.7,duration:1.2,ease:'back.out(1.7)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
   startWorld=function(){ if(running)return; running=true; playIntro(); animate(); };
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(running){raf=requestAnimationFrame(animate);}});
 })();
