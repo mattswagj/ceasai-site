@@ -42,16 +42,36 @@ img{max-width:100%}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(130% 100% at 50% 45%, transparent 58%, rgba(0,0,0,.5))}
 
-/* ===== LOADER (ceremony) ===== */
-#loader{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity 1s var(--ease),visibility 1s}
+/* ===== LOADER — robot eyes power-on + % counter ===== */
+#loader{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  background:radial-gradient(58vw 58vw at 50% 42%, rgba(20,42,92,.34), transparent 62%), var(--bg);
+  transition:opacity 1s var(--ease),visibility 1s}
 #loader.done{opacity:0;visibility:hidden}
-.ld-mark{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(48px,9vw,104px);letter-spacing:.01em;color:#fff;opacity:0;transform:translateY(14px);animation:lin 1.2s var(--ease) .2s forwards}
+/* robot face: antenna dot + two glowing blue eyes (power on / pulse / blink) */
+.ld-face{position:relative;display:flex;align-items:center;justify-content:center;gap:34px;height:96px}
+.ld-dot{position:absolute;top:2px;left:50%;width:12px;height:12px;border-radius:50%;transform:translateX(-50%);
+  background:var(--gold);opacity:0;animation:eyeOn .7s var(--ease) .05s forwards, dotPulse 2s ease-in-out 1s infinite}
+.ld-dot:after{content:"";position:absolute;left:50%;top:11px;width:2px;height:24px;transform:translateX(-50%);
+  background:linear-gradient(var(--gold),transparent)}
+.ld-eye{width:50px;height:50px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle at 50% 42%, #e8f8ff 0%, #41cbff 40%, #0c84d8 72%, #06324f 100%);
+  border:3px solid var(--gold);
+  box-shadow:0 0 0 2px rgba(8,12,24,.85),0 0 26px 5px rgba(64,200,255,.55),inset 0 0 12px rgba(255,255,255,.5);
+  animation:eyeOn .9s var(--ease) .25s forwards, eyePulse 2.4s ease-in-out 1.3s infinite, eyeBlink 4.2s ease-in-out 2.6s infinite}
+.ld-eye.r{animation-delay:.42s,1.5s,3.1s}
+@keyframes eyeOn{from{opacity:0;filter:brightness(.25) saturate(.4)}to{opacity:1;filter:none}}
+@keyframes eyePulse{0%,100%{box-shadow:0 0 0 2px rgba(8,12,24,.85),0 0 22px 4px rgba(64,200,255,.5),inset 0 0 12px rgba(255,255,255,.45)}
+  50%{box-shadow:0 0 0 2px rgba(8,12,24,.85),0 0 44px 9px rgba(64,200,255,.95),inset 0 0 14px rgba(255,255,255,.75)}}
+@keyframes eyeBlink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 12px 2px rgba(253,224,71,.6)}50%{box-shadow:0 0 22px 6px rgba(253,224,71,.95)}}
+.ld-mark{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(40px,7.4vw,84px);letter-spacing:.01em;color:#fff;opacity:0;transform:translateY(14px);animation:lin 1.1s var(--ease) .5s forwards}
 .ld-mark .a{font-style:italic;color:var(--gold)}
 @keyframes lin{to{opacity:1;transform:none}}
-.ld-sub{font-size:10px;letter-spacing:.5em;text-transform:uppercase;color:var(--muted);opacity:0;animation:lin 1.2s var(--ease) .6s forwards}
-.ld-bar{width:min(280px,52vw);height:1px;background:rgba(255,255,255,.1);overflow:hidden;opacity:0;animation:lin 1s var(--ease) .8s forwards}
+.ld-sub{font-size:10px;letter-spacing:.5em;text-transform:uppercase;color:var(--muted);opacity:0;animation:lin 1.2s var(--ease) .7s forwards}
+.ld-pct{font-family:'Sora';font-weight:300;font-variant-numeric:tabular-nums;font-size:clamp(32px,5.6vw,58px);letter-spacing:.02em;line-height:1;
+  color:transparent;background:linear-gradient(100deg,var(--blue-light),var(--gold));-webkit-background-clip:text;background-clip:text}
+.ld-bar{width:min(280px,52vw);height:2px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden;opacity:0;animation:lin 1s var(--ease) .8s forwards}
 .ld-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--gold))}
-.ld-pct{font-size:10px;letter-spacing:.4em;color:var(--muted2,#5b6680)}
 .ld-coord{position:absolute;bottom:34px;font-size:9px;letter-spacing:.34em;color:#3c455e}
 
 /* ===== NAV ===== */
@@ -233,11 +253,16 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 
 <!-- LOADER -->
 <div id="loader">
+  <div class="ld-face">
+    <span class="ld-dot"></span>
+    <span class="ld-eye l"></span>
+    <span class="ld-eye r"></span>
+  </div>
   <div class="ld-mark">Ceas<span class="a">AI</span></div>
   <div class="ld-sub">Custom AI Solutions</div>
+  <div class="ld-pct" id="ldPct">0%</div>
   <div class="ld-bar"><i id="ldBar"></i></div>
-  <div class="ld-pct" id="ldPct">0</div>
-  <div class="ld-coord">33° 53′ N · 84° 12′ W — ATLANTA</div>
+  <div class="ld-coord">CUSTOM AI · POWERING ON</div>
 </div>
 
 <!-- NAV -->
@@ -409,11 +434,11 @@ let worldProgress=0, splitProgress=0, showcaseProgress=0;
   document.documentElement.classList.add('lenis-stopped');
   const dur=reduceMotion?1100:1700, t0=performance.now(); let finished=false;
   function finish(){ if(finished)return; finished=true; clearInterval(iv);
-    bar.style.width='100%'; pct.textContent='100';
+    bar.style.width='100%'; pct.textContent='100%';
     ld.classList.add('done'); document.documentElement.classList.remove('lenis-stopped');
     try{startWorld();}catch(e){} if(window.ScrollTrigger){ScrollTrigger.refresh();} }
   const iv=setInterval(()=>{ const k=Math.min(1,(performance.now()-t0)/dur), p=Math.round(k*100);
-    bar.style.width=p+'%'; pct.textContent=String(p).padStart(2,'0');
+    bar.style.width=p+'%'; pct.textContent=p+'%';
     if(k>=1){clearInterval(iv); setTimeout(finish,reduceMotion?160:340);} },60);
   setTimeout(finish, 2600); /* hard cap: loader never lingers */
 })();
@@ -580,56 +605,20 @@ let startWorld=function(){};
   function radialTex(stops){const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');const gr=g.createRadialGradient(32,32,0,32,32,32);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);}
   const texCore=radialTex([[0,'rgba(255,255,255,1)'],[.25,'rgba(255,255,255,.9)'],[.55,'rgba(170,205,255,.4)'],[1,'rgba(0,0,0,0)']]);
 
-  /* ===================== ROBOT ===================== */
-  const robot=new THREE.Group(); scene.add(robot); robot.scale.setScalar(0.7);
+  /* ============ HERO EMBLEM — real CeasAI logo, splits down the middle ============ */
+  const robot=new THREE.Group(); scene.add(robot); robot.scale.setScalar(0.48);
   const leftG=new THREE.Group(), rightG=new THREE.Group(); robot.add(leftG,rightG);
-  const fadeMats=[]; // robot materials to fade together
-  function gold(){ const m=new THREE.MeshStandardMaterial({color:0xF4BB3E,metalness:0.45,roughness:0.32,emissive:0x8a5e12,emissiveIntensity:0.95,transparent:true}); fadeMats.push(m); return m; }
-  const matGoldL=gold(), matGoldR=gold();
-  const matFace=new THREE.MeshStandardMaterial({color:0x0a1430,metalness:0.5,roughness:0.5,emissive:0x0a1830,emissiveIntensity:0.4,transparent:true}); fadeMats.push(matFace);
-  const matEye=new THREE.MeshBasicMaterial({color:0x7cc4ff,transparent:true}); fadeMats.push(matEye);
-  const matTip=new THREE.MeshBasicMaterial({color:0x9ad2ff,transparent:true}); fadeMats.push(matTip);
-  const matMouth=new THREE.MeshBasicMaterial({color:0x6fb0ff,transparent:true}); fadeMats.push(matMouth);
-
-  function box(w,h,d){return new THREE.BoxGeometry(w,h,d);}
-  // half heads (gap seam at x=0)
-  const lh=new THREE.Mesh(box(58,124,84),matGoldL); lh.position.set(-31,0,0); leftG.add(lh);
-  const rh=new THREE.Mesh(box(58,124,84),matGoldR); rh.position.set(31,0,0); rightG.add(rh);
-  // face plates (front, dark)
-  const flp=new THREE.Mesh(box(54,94,6),matFace); flp.position.set(-30,2,41); leftG.add(flp);
-  const frp=new THREE.Mesh(box(54,94,6),matFace); frp.position.set(30,2,41); rightG.add(frp);
-  // eyes (glow)
-  function eye(x,grp){const e=new THREE.Mesh(new THREE.SphereGeometry(12,20,20),matEye);e.position.set(x,14,46);grp.add(e);return e;}
-  const eyeL=eye(-22,leftG), eyeR=eye(22,rightG);
-  // brow visor bars over eyes (gold)
-  const brl=new THREE.Mesh(box(40,5,6),leftG===leftG?matGoldL:matGoldL); brl.position.set(-22,32,45); leftG.add(brl);
-  const brr=new THREE.Mesh(box(40,5,6),matGoldR); brr.position.set(22,32,45); rightG.add(brr);
-  // mouth bars (per side, no seam crossing)
-  function mouth(x,grp){const m=new THREE.Mesh(box(13,4,5),matMouth);m.position.set(x,-34,45);grp.add(m);}
-  mouth(-14,leftG); mouth(-30,leftG); mouth(14,rightG); mouth(30,rightG);
-  // antennae
-  function antenna(x,grp){const a=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,30,8), x<0?matGoldL:matGoldR);a.position.set(x,76,0);grp.add(a);const t=new THREE.Mesh(new THREE.SphereGeometry(6,16,16),matTip);t.position.set(x,92,0);grp.add(t);return t;}
-  const tipL=antenna(-24,leftG), tipR=antenna(24,rightG);
-  // ear knobs
-  const elk=new THREE.Mesh(new THREE.CylinderGeometry(10,10,12,18),matGoldL); elk.rotation.z=Math.PI/2; elk.position.set(-60,0,0); leftG.add(elk);
-  const erk=new THREE.Mesh(new THREE.CylinderGeometry(10,10,12,18),matGoldR); erk.rotation.z=Math.PI/2; erk.position.set(60,0,0); rightG.add(erk);
-  // hexagon badge frame (pointy-top), 3 edges per side, z behind head
-  function addEdge(group,ax,ay,bx,by,z,r,mat){
-    const a=new THREE.Vector3(ax,ay,z), b=new THREE.Vector3(bx,by,z), len=a.distanceTo(b);
-    const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,10),mat);
-    m.position.copy(a).add(b).multiplyScalar(0.5);
-    m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), b.clone().sub(a).normalize());
-    group.add(m);
-  }
-  const R=104, HZ=-18, HR=4.5;
-  const V=[]; for(let k=0;k<6;k++){const ang=(90+60*k)*Math.PI/180; V.push([R*Math.cos(ang),R*Math.sin(ang)]);}
-  // left edges v0-v1,v1-v2,v2-v3 ; right v3-v4,v4-v5,v5-v0
-  addEdge(leftG,V[0][0],V[0][1],V[1][0],V[1][1],HZ,HR,matGoldL);
-  addEdge(leftG,V[1][0],V[1][1],V[2][0],V[2][1],HZ,HR,matGoldL);
-  addEdge(leftG,V[2][0],V[2][1],V[3][0],V[3][1],HZ,HR,matGoldL);
-  addEdge(rightG,V[3][0],V[3][1],V[4][0],V[4][1],HZ,HR,matGoldR);
-  addEdge(rightG,V[4][0],V[4][1],V[5][0],V[5][1],HZ,HR,matGoldR);
-  addEdge(rightG,V[5][0],V[5][1],V[0][0],V[0][1],HZ,HR,matGoldR);
+  const fadeMats=[]; // emblem halves fade together as the logo splits
+  const emImg=new Image();
+  const texL=new THREE.Texture(emImg), texR=new THREE.Texture(emImg);
+  [texL,texR].forEach(tx=>{tx.repeat.set(0.5,1);tx.minFilter=THREE.LinearFilter;tx.magFilter=THREE.LinearFilter;tx.generateMipmaps=false;});
+  texL.offset.set(0,0); texR.offset.set(0.5,0);
+  emImg.onload=()=>{texL.needsUpdate=true;texR.needsUpdate=true; if(window.ScrollTrigger)ScrollTrigger.refresh();};
+  emImg.src='emblem.png';
+  const EW=300, EH=300;
+  function emblemMat(tx){const m=new THREE.MeshBasicMaterial({map:tx,transparent:true,depthWrite:false,opacity:1});fadeMats.push(m);return m;}
+  const emL=new THREE.Mesh(new THREE.PlaneGeometry(EW/2,EH),emblemMat(texL)); emL.position.set(-EW/4,0,0.5); leftG.add(emL);
+  const emR=new THREE.Mesh(new THREE.PlaneGeometry(EW/2,EH),emblemMat(texR)); emR.position.set(EW/4,0,0.5); rightG.add(emR);
 
   // glowing seam plane
   const seam=new THREE.Mesh(new THREE.PlaneGeometry(18,250), new THREE.MeshBasicMaterial({color:0xd6ecff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
@@ -720,9 +709,6 @@ let startWorld=function(){};
     robot.rotation.y=(Math.sin(t*0.5)*0.12+mouse.x*0.25)*idle;
     robot.rotation.x=(mouse.y*0.10)*idle;
     robot.position.y=-12+Math.sin(t*1.2)*4*idle;
-    // eye pulse + antenna blink
-    const pulse=1+Math.sin(t*3)*0.06; eyeL.scale.setScalar(pulse); eyeR.scale.setScalar(pulse);
-    matTip.opacity=(0.65+0.35*Math.sin(t*4));
 
     // SPLIT
     const sep=GAP*ep;
@@ -769,7 +755,7 @@ let startWorld=function(){};
     if(bloomOK){ try{ renderBloom(); }catch(e){ bloomOK=false; } }
     else { renderer.setRenderTarget(null); renderer.clear(); renderer.render(scene,camera); }
   }
-  function playIntro(){ if(window.gsap){ gsap.fromTo(robot.scale,{x:0.45,y:0.45,z:0.45},{x:0.7,y:0.7,z:0.7,duration:1.2,ease:'back.out(1.7)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
+  function playIntro(){ if(window.gsap){ gsap.fromTo(robot.scale,{x:0.3,y:0.3,z:0.3},{x:0.48,y:0.48,z:0.48,duration:1.2,ease:'back.out(1.7)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
   startWorld=function(){ if(running)return; running=true; playIntro(); animate(); };
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(running){raf=requestAnimationFrame(animate);}});
 })();
