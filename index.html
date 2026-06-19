@@ -711,7 +711,7 @@ let startWorld=function(){};
   function lerp(a,b,t){return a+(b-a)*t;}
   function smooth(t){t=Math.min(1,Math.max(0,t));return t*t*(3-2*t);}
   let t=0,raf,running=false,sp2=0,progSmooth=0;
-  const GAP=reduceMotion?120:185;
+  const GAP=reduceMotion?165:205;
   let slow=0,last=performance.now();
 
   function animate(){
@@ -735,7 +735,7 @@ let startWorld=function(){};
     leftG.rotation.y=-ep*0.5*MO; rightG.rotation.y=ep*0.5*MO;
     leftG.rotation.z=ep*0.14; rightG.rotation.z=-ep*0.14;
     leftG.position.y=ep*8; rightG.position.y=-ep*8;
-    const robVis=Math.min(1,Math.max(0,1-(window.scrollY/(innerHeight*1.15))));
+    const robVis=Math.min(1,Math.max(0,1-(window.scrollY/(innerHeight*1.75))));
     for(let i=0;i<fadeMats.length;i++) fadeMats[i].opacity=robVis;
     const bell=Math.sin(Math.min(1,p)*Math.PI);
     seam.material.opacity=Math.min(1,bell*1.6)*robVis; seam.scale.x=1+ep*2.6; seam.scale.y=1+ep*0.18;
