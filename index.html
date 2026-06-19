@@ -294,9 +294,7 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 
 <!-- ============ HERO (robot split) ============ -->
 <section id="hero" class="chapter">
-  <div class="hero-top">
-    <div class="chap-label"><span class="num">∞</span> For small businesses</div>
-  </div>
+  <div class="hero-top"></div>
   <div class="hero-bottom">
     <h1 class="hero-statement statement"><span class="ln"><span>Your whole business,</span></span><span class="ln"><span>in <span class="gr">one simple app.</span></span></span></h1>
     <div class="ctas">
@@ -641,7 +639,7 @@ let startWorld=function(){};
   const texCore=radialTex([[0,'rgba(255,255,255,1)'],[.25,'rgba(255,255,255,.9)'],[.55,'rgba(170,205,255,.4)'],[1,'rgba(0,0,0,0)']]);
 
   /* ============== HERO EMBLEM — real CeasAI logo, splits down the middle ============== */
-  const robot=new THREE.Group(); scene.add(robot); robot.scale.setScalar(0.56);
+  const robot=new THREE.Group(); scene.add(robot); robot.scale.setScalar(0.48);
   const leftG=new THREE.Group(), rightG=new THREE.Group(); robot.add(leftG,rightG);
   const fadeMats=[];
   const emImg=new Image();
@@ -730,7 +728,7 @@ let startWorld=function(){};
     const idle=1-smooth(p*1.4);
     robot.rotation.y=(Math.sin(t*0.5)*0.05+mouse.x*0.10)*idle*MO;
     robot.rotation.x=(mouse.y*0.05)*idle;
-    robot.position.y=32+Math.sin(t*1.2)*1.6*idle;
+    robot.position.y=88+Math.sin(t*1.2)*1.6*idle;
 
     const sep=GAP*ep;
     leftG.position.x=-sep; rightG.position.x=sep;
@@ -758,7 +756,7 @@ let startWorld=function(){};
     if(bloomOK){ try{ renderFgBloom(); }catch(e){ bloomOK=false; } }
     else { renderer.setRenderTarget(null); renderer.setClearColor(0x000000,0); renderer.clear(); renderer.render(scene,camera); }
   }
-  function playIntro(){ if(window.gsap){ gsap.fromTo(robot.scale,{x:0.4,y:0.4,z:0.4},{x:0.56,y:0.56,z:0.56,duration:1.2,ease:'back.out(1.4)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
+  function playIntro(){ if(window.gsap){ gsap.fromTo(robot.scale,{x:0.34,y:0.34,z:0.34},{x:0.48,y:0.48,z:0.48,duration:1.2,ease:'back.out(1.4)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
   startWorld=function(){ if(running)return; running=true; started=true; playIntro(); animate(); };
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(running){last=performance.now();raf=requestAnimationFrame(animate);}});
 })();
