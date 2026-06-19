@@ -401,7 +401,7 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 const reduceMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const isMobile=innerWidth<760;
 const isTouch=matchMedia('(hover:none)').matches;
-let worldProgress=0, splitProgress=0;
+let worldProgress=0, splitProgress=0, showcaseProgress=0;
 
 /* ---------- LOADER ---------- */
 (function(){
@@ -520,6 +520,29 @@ if(window.gsap && window.ScrollTrigger){
       scrollTrigger:{trigger:ch,start:'top 90%',end:'top 54%',scrub:true}});
     ci++;
   }
+
+  /* ---------- NEW SCROLL ANIMATIONS (Awwwards-style, scroll-driven) ---------- */
+  /* 1. Kinetic oversized typography: statements scale + drift on scroll
+        (the "CARBON / HOUSE OF GUCCI / Hello World" big-type motif) */
+  gsap.utils.toArray('.chapter:not(#hero) .statement').forEach(st=>{
+    const ch=st.closest('.chapter');
+    gsap.fromTo(st,{scale:reduceMotion?0.97:0.92,yPercent:reduceMotion?3:7},
+      {scale:reduceMotion?1.03:1.07,yPercent:reduceMotion?-3:-7,ease:'none',
+       scrollTrigger:{trigger:ch,start:'top bottom',end:'bottom top',scrub:reduceMotion?1.2:1}});
+  });
+  /* 2. Flagship "product showcase": as Protiq centres, the 3D content-core
+        pulls to centre-stage, surges forward and spins (pinned-product reveal).
+        Drives a triangle 0->1->0 peaking when the section is centred. */
+  ScrollTrigger.create({trigger:'#protiq',start:'top bottom',end:'bottom top',
+    scrub:true, onUpdate:self=>{ showcaseProgress=1-Math.abs(self.progress-0.5)*2; }});
+  /* 3. Horizontal kinetic drift on the chip row + proof quote (type-in-motion) */
+  const chips=document.querySelector('#industries .chips');
+  if(chips) gsap.fromTo(chips,{xPercent:reduceMotion?-2:-6},{xPercent:reduceMotion?2:6,
+    ease:'none',scrollTrigger:{trigger:'#industries',start:'top bottom',end:'bottom top',scrub:1}});
+  const quote=document.querySelector('#proof .quote');
+  if(quote) gsap.fromTo(quote,{xPercent:reduceMotion?-1.5:-4},{xPercent:reduceMotion?1.5:4,
+    ease:'none',scrollTrigger:{trigger:'#proof',start:'top bottom',end:'bottom top',scrub:1}});
+
   ScrollTrigger.refresh();
 }
 
@@ -718,13 +741,17 @@ let startWorld=function(){};
 
     // evolving content core (fades in after the hero split, drifts + colour-shifts through chapters)
     const cw=Math.min(1,Math.max(0,(worldProgress-0.14)/0.16));
+    const sc=smooth(showcaseProgress)*(reduceMotion?0.5:1);  // flagship product reveal beat
     ccU.uTime.value=t; ccU.uMouse.value=Math.min(1,Math.abs(mouse.x)+Math.abs(mouse.y));
-    ccU.uShift.value=worldProgress; ccU.uOpacity.value=cw*0.6;
-    const ccx=250+Math.sin(worldProgress*Math.PI*2.4)*120, ccy=Math.cos(worldProgress*Math.PI*2.2)*64;
-    contentCore.position.set(ccx,ccy,-30); contentWire.position.copy(contentCore.position);
-    contentCore.rotation.y+=0.0016*MO+0.0004; contentCore.rotation.x=mouse.y*0.18;
+    ccU.uShift.value=worldProgress; ccU.uOpacity.value=cw*0.6+sc*0.34;
+    let ccx=250+Math.sin(worldProgress*Math.PI*2.4)*120, ccy=Math.cos(worldProgress*Math.PI*2.2)*64;
+    ccx=lerp(ccx,40,sc); ccy=lerp(ccy,6,sc);                  // pull product to centre-stage
+    contentCore.position.set(ccx,ccy,-30+sc*120);             // surge forward (zoom)
+    contentWire.position.copy(contentCore.position);
+    const scz=1+sc*0.85; contentCore.scale.setScalar(scz); contentWire.scale.setScalar(scz*1.05);
+    contentCore.rotation.y+=0.0016*MO+0.0004+sc*0.05*MO; contentCore.rotation.x=mouse.y*0.18; // spin on showcase
     contentWire.rotation.copy(contentCore.rotation);
-    ccGlow.position.set(ccx,ccy,-70); ccGlow.material.opacity=cw*0.26;
+    ccGlow.position.set(ccx,ccy,-70); ccGlow.material.opacity=cw*0.26+sc*0.30;
 
     // ambiance
     cloud.rotation.y+=0.0009*MO+0.0003; cloud.rotation.x=mouse.y*0.08;
