@@ -216,8 +216,8 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 }
 /* Reduce-motion: render fully, just gentler (per user request, never disabled) */
 @media(prefers-reduced-motion:reduce){
-  .ln > span{transition:transform .8s var(--easeo)}
-  .lede-min,.rv{transition:opacity .7s ease,transform .7s ease}
+  .ln > span{transform:none!important}
+  .lede-min,.rv,.hero-sub{opacity:1!important;transform:none!important}
   #loader{transition:opacity .6s}
 }
 </style>
@@ -299,7 +299,6 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
     <h1 class="hero-statement statement"><span class="ln"><span>Your whole business,</span></span><span class="ln"><span>in <span class="gr">one simple app.</span></span></span></h1>
   </div>
   <div class="hero-bottom">
-    <p class="hero-sub">Custom agentic AI — your CRM and booking, in one simple app.</p>
     <div class="ctas">
       <a href="#contact" class="btn btn-primary" data-cur>Get Started</a>
       <a href="#approach" class="btn btn-ghost" data-cur>Begin the tour</a>
@@ -731,7 +730,7 @@ let startWorld=function(){};
     const idle=1-smooth(p*1.4);
     robot.rotation.y=(Math.sin(t*0.5)*0.05+mouse.x*0.10)*idle*MO;
     robot.rotation.x=(mouse.y*0.05)*idle;
-    robot.position.y=-45+Math.sin(t*1.2)*1.6*idle;
+    robot.position.y=-58+Math.sin(t*1.2)*1.6*idle;
 
     const sep=GAP*ep;
     leftG.position.x=-sep; rightG.position.x=sep;
