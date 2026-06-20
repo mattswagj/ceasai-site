@@ -241,6 +241,20 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 @media(prefers-reduced-motion:reduce){
   .cine-orb{filter:blur(40px)}
 }
+/* ===== TESTIMONIALS + TEAM (real client proof + founders) ===== */
+.tnote{margin-top:clamp(22px,3.4vh,36px);max-width:60ch;color:var(--muted);font-family:'Sora';font-weight:300;font-size:clamp(14px,1.3vw,16px);line-height:1.7}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:clamp(22px,3.4vh,38px);width:100%;max-width:920px;text-align:left}
+.tcard{border:1px solid var(--line);border-radius:16px;padding:clamp(22px,2.4vw,30px);background:rgba(255,255,255,.02);transition:.4s var(--ease)}
+.tcard:hover{border-color:var(--blue);transform:translateY(-3px)}
+.tcard blockquote{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(18px,1.7vw,23px);line-height:1.4;color:var(--white)}
+.tcard figcaption{margin-top:16px;font-family:'Sora';font-size:12.5px;letter-spacing:.04em;color:var(--muted)}
+.tcard figcaption b{color:var(--gold);font-weight:500}
+.tcard figcaption span{display:block;margin-top:5px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2)}
+.team{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(22px,3.4vh,38px);width:100%;max-width:640px}
+.tm{border-top:1px solid var(--line);padding:18px 4px;text-align:left}
+.tm-n{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(24px,2.6vw,34px);color:var(--white)}
+.tm-r{font-family:'Sora';font-weight:300;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+@media(max-width:760px){.tgrid,.team{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -267,7 +281,7 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 <nav id="nav">
   <a class="brand" href="#hero" data-cur><span><b>Ceas</b><span class="ai">AI</span></span></a>
   <div class="nav-right">
-    <span class="coordbug">EST. 2025 · ATLANTA</span>
+    <span class="coordbug">EST. 2024 · ATLANTA</span>
     <div class="iconbtn menu-btn" id="menuBtn" role="button" tabindex="0" aria-label="Menu" data-cur><span></span><span></span></div>
   </div>
 </nav>
@@ -320,10 +334,12 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
     <div class="chap-label"><span class="num">II</span><span class="rule"></span> What We Build</div>
     <h2 class="statement sm"><span class="ln"><span>No off-the-shelf bots.</span></span></h2>
     <ul class="svc-list">
-      <li class="rv"><span class="n">01</span> Automated emailing <span class="d">On-brand follow-ups & nurture, sent automatically.</span></li>
-      <li class="rv"><span class="n">02</span> Database integration <span class="d">AI wired into the tools and data you already use.</span></li>
-      <li class="rv"><span class="n">03</span> Lead capture <span class="d">Capture, qualify and route leads the moment they arrive.</span></li>
-      <li class="rv"><span class="n">04</span> One-line booking <span class="d">Turn browsers into booked clients in a single message.</span></li>
+      <li class="rv"><span class="n">01</span> Custom AI automation <span class="d">AI agents and workflow automations that cut manual work and streamline operations.</span></li>
+      <li class="rv"><span class="n">02</span> Automated customer messaging <span class="d">Smart email &amp; SMS that respond instantly, nurture leads and keep clients engaged 24/7.</span></li>
+      <li class="rv"><span class="n">03</span> Database integration <span class="d">Connect your systems, unify your data and unlock AI-driven insights.</span></li>
+      <li class="rv"><span class="n">04</span> Lead management <span class="d">Capture, qualify and route leads intelligently — no lost opportunities.</span></li>
+      <li class="rv"><span class="n">05</span> Workflow optimization <span class="d">We redesign operations with AI to raise output and cut overhead.</span></li>
+      <li class="rv"><span class="n">06</span> Growth &amp; analytics <span class="d">Dashboards, performance tracking and predictive analytics to scale smarter.</span></li>
     </ul>
   </div>
 </section>
@@ -367,6 +383,17 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
     <div class="chap-label"><span class="num">V</span><span class="rule"></span> Proof</div>
     <blockquote class="quote"><span class="ln"><span><span class="mark">“</span>Respond faster.</span></span><span class="ln"><span>Book more leads.</span></span><span class="ln"><span>Without adding staff.<span class="mark">”</span></span></span></blockquote>
     <div class="attr rv">— <b>D1 Training</b> · Peachtree Corners, Metro Atlanta</div>
+    <p class="tnote rv">We're proud to support businesses across Metro Atlanta with AI-driven automations that improve lead response, communication and booking.</p>
+    <div class="tgrid">
+      <figure class="tcard rv">
+        <blockquote>“CeasAI has been a great help to our business — I call them my AI guys. From our first meeting they've prioritized understanding our needs and building creative, customized solutions. The sky is the limit for CeasAI.”</blockquote>
+        <figcaption>— Roald · Owner, <b>D1 Training</b> Peachtree Corners<span>Lead-response automation + booking workflows</span></figcaption>
+      </figure>
+      <figure class="tcard rv">
+        <blockquote>“CeasAI streamlined our communication and made booking significantly easier for our clients.”</blockquote>
+        <figcaption>— <b>Activate Health</b><span>Client-intake automation + scheduling support</span></figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -375,8 +402,12 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
   <div class="inner">
     <div class="chap-label"><span class="num">VI</span><span class="rule"></span> The Studio</div>
     <h2 class="statement"><span class="ln"><span>Custom AI, built</span></span><span class="ln"><span>around <span class="em">your business.</span></span></span></h2>
-    <p class="lede-min">CeasAI is an Atlanta-based studio building custom, agentic solutions for everyday business owners. We started in the fitness world in 2025 and have been growing ever since — sports, hospitality, and beyond.</p>
-    <div class="coord">NORCROSS, GEORGIA — EST. 2025</div>
+    <p class="lede-min">Our purpose is to empower businesses with custom-built AI that drives efficiency, innovation and growth. CeasAI was founded by Paris and Matt in October 2024 — two lifelong friends whose partnership began on the basketball court. After graduating — Matt in Cybersecurity from Montreat College, Paris in Management of Information Systems from the University of West Georgia — they built CeasAI to help businesses use AI in ethical, effective ways. Hard work fuels innovation.</p>
+    <div class="team">
+      <div class="tm rv"><div class="tm-n">Paris</div><div class="tm-r">Co-founder · MIS Graduate · AI Innovator</div></div>
+      <div class="tm rv"><div class="tm-n">Matt</div><div class="tm-r">Co-founder · Cybersecurity Graduate · AI Strategist</div></div>
+    </div>
+    <div class="coord">METRO ATLANTA — EST. 2024</div>
   </div>
 </section>
 
@@ -400,8 +431,9 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
     </form>
     <div class="contact-meta rv">
       <a href="mailto:ceasaispring@gmail.com" data-cur>ceasaispring@gmail.com</a>
+      <a href="tel:7707334745" data-cur>770-733-4745</a>
       <a href="https://www.instagram.com/ceas_ai/" target="_blank" rel="noopener" data-cur>@ceas_ai</a>
-      <span class="ph">Norcross, Georgia</span>
+      <span class="ph">Metro Atlanta Area</span>
     </div>
   </div>
 </section>
@@ -413,7 +445,7 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
     <a href="https://www.instagram.com/ceas_ai/" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.linkedin.com/company/111285166/" target="_blank" rel="noopener">LinkedIn</a>
   </div>
-  <div class="fbot">© 2026 CeasAI · Custom Solutions — Atlanta, Georgia</div>
+  <div class="fbot">© 2026 CeasAI · Custom Solutions — Metro Atlanta, Georgia</div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
