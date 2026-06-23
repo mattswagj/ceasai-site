@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0F1C'/%3E%3Ccircle cx='16' cy='9' r='1.6' fill='%23FDE047'/%3E%3Crect x='8' y='11' width='16' height='12' rx='4' fill='none' stroke='%23FDE047' stroke-width='1.6'/%3E%3Ccircle cx='12.5' cy='17' r='1.8' fill='%23FDE047'/%3E%3Ccircle cx='19.5' cy='17' r='1.8' fill='%23FDE047'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#05070D; --navy:#0A0A0C; --ink:#0C0E14;
@@ -185,6 +185,23 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 }
 
   #hero .scrollcue{display:none}
+
+/* ===== refinement pass v2 : dark immersive luxury ===== */
+:root{--display:'Playfair Display','Cormorant Garamond',Georgia,serif}
+.statement{font-family:var(--display)!important;font-weight:500;letter-spacing:-.02em}
+.statement.sm{font-weight:500}
+.statement .em{font-style:italic;font-weight:500}
+.statement .gr{font-weight:600}
+.hero-statement{font-weight:500;letter-spacing:-.022em}
+.chap-label{letter-spacing:.52em;margin-bottom:clamp(30px,4.8vh,54px);opacity:.8}
+.chapter{padding:clamp(120px,18vh,200px) clamp(22px,6vw,80px)}
+.chapter .inner{max-width:1040px}
+.statement{max-width:15ch}
+.statement.sm{max-width:20ch}
+.lede-min{max-width:46ch}
+.gsx .ln>span{transform:none!important;transition:none!important}
+.gsx .wd{display:inline-block;will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){.gsx .wd{transform:none!important;opacity:1!important}}
 </style>
 </head>
 <body>
@@ -704,6 +721,60 @@ let startWorld=function(){};
   function playIntro(){ if(window.gsap){ gsap.fromTo(robot.scale,{x:0.45,y:0.45,z:0.45},{x:0.7,y:0.7,z:0.7,duration:1.2,ease:'back.out(1.7)',delay:0.1}); gsap.fromTo(cloud.scale,{x:0.2,y:0.2,z:0.2},{x:1,y:1,z:1,duration:2,ease:'power3.out'}); } }
   startWorld=function(){ if(running)return; running=true; playIntro(); animate(); };
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(running){raf=requestAnimationFrame(animate);}});
+})();
+</script>
+
+<script>
+(function(){
+  function init(){
+    try{
+      if(!window.gsap) return;
+      var gsap = window.gsap;
+      if(window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduce) return;
+      function splitWords(line){
+        var nodes = Array.prototype.slice.call(line.childNodes);
+        var frag = document.createDocumentFragment();
+        nodes.forEach(function(n){
+          if(n.nodeType===3){
+            n.textContent.split(/(\s+)/).forEach(function(p){
+              if(p==="") return;
+              if(/^\s+$/.test(p)){ frag.appendChild(document.createTextNode(p)); }
+              else { var w=document.createElement("span"); w.className="wd"; w.textContent=p; frag.appendChild(w); }
+            });
+          } else if(n.nodeType===1){
+            var w=document.createElement("span"); w.className="wd"; w.appendChild(n.cloneNode(true)); frag.appendChild(w);
+          } else { frag.appendChild(n.cloneNode(true)); }
+        });
+        line.textContent=""; line.appendChild(frag);
+      }
+      var statements = document.querySelectorAll(".statement:not(.hero-statement)");
+      statements.forEach(function(st){
+        st.classList.add("gsx");
+        var lines = st.querySelectorAll(".ln > span");
+        var targets;
+        if(lines.length){ lines.forEach(splitWords); targets = st.querySelectorAll(".wd"); }
+        else { targets = [st]; }
+        if(!targets.length) return;
+        gsap.set(targets, {yPercent:120, opacity:0});
+        gsap.to(targets, {yPercent:0, opacity:1, duration:1.0, ease:"power3.out", stagger:0.05,
+          scrollTrigger:{ trigger:st, start:"top 82%", once:true }});
+      });
+      document.querySelectorAll("section.chapter").forEach(function(sec){
+        if(sec.id==="hero") return;
+        var label = sec.querySelector(".chap-label");
+        var st = sec.querySelector(".statement");
+        if(label) gsap.to(label, {yPercent:-42, ease:"none",
+          scrollTrigger:{ trigger:sec, start:"top bottom", end:"bottom top", scrub:true }});
+        if(st) gsap.to(st, {yPercent:-7, ease:"none",
+          scrollTrigger:{ trigger:sec, start:"top bottom", end:"bottom top", scrub:true }});
+      });
+      if(window.ScrollTrigger) window.ScrollTrigger.refresh();
+    }catch(e){ try{console.warn("[refine] skipped", e);}catch(_){} }
+  }
+  if(document.readyState==="complete"){ setTimeout(init, 350); }
+  else { window.addEventListener("load", function(){ setTimeout(init, 350); }); }
 })();
 </script>
 </body>
