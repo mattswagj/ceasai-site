@@ -202,6 +202,10 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 .gsx .ln>span{transform:none!important;transition:none!important}
 .gsx .wd{display:inline-block;will-change:transform,opacity}
 @media(prefers-reduced-motion:reduce){.gsx .wd{transform:none!important;opacity:1!important}}
+
+/* QA legibility patch: keep copy readable where it overlaps the 3D scene */
+.lede-min,.svc-list li .d,.quote{text-shadow:0 2px 18px rgba(0,0,0,.92),0 0 5px rgba(0,0,0,.85)}
+.chip{background:rgba(8,7,5,.42);text-shadow:0 1px 8px rgba(0,0,0,.8)}
 </style>
 </head>
 <body>
