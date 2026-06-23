@@ -188,6 +188,22 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
 .hero-top,.hero-bottom{display:flex;flex-direction:column;align-items:center;width:100%}
 .hero-statement{font-family:'Cormorant Garamond',serif;font-weight:300;color:#fff;font-size:clamp(38px,6.4vw,92px);line-height:1.02;letter-spacing:-.01em;max-width:18ch;text-shadow:0 2px 40px rgba(7,11,20,.9)}
 .hero-statement .gr{background:linear-gradient(100deg,var(--blue-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* soft legibility scrim: tames the robot glow directly behind the headline so thin serif strokes stay crisp */
+.hero-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(58% 40% at 50% 44%, rgba(7,11,20,.62), rgba(7,11,20,.28) 52%, transparent 76%)}
+
+/* ===== CHAPTER RAIL (scroll-spy orientation dots) ===== */
+.dotnav{position:fixed;right:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:90;
+  display:flex;flex-direction:column;gap:15px;align-items:flex-end}
+.dotnav a{position:relative;width:14px;height:14px;display:grid;place-items:center}
+.dotnav a::after{content:'';width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.26);transition:.4s var(--ease)}
+.dotnav a:hover::after,.dotnav a.active::after{background:var(--gold);transform:scale(1.55);box-shadow:0 0 13px rgba(253,224,71,.65)}
+.dotnav a.active{cursor:default}
+.dotnav .dlabel{position:absolute;right:20px;top:50%;transform:translateY(-50%) translateX(6px);opacity:0;
+  white-space:nowrap;font-family:'Sora';font-weight:400;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);pointer-events:none;transition:.35s var(--ease)}
+.dotnav a:hover .dlabel{opacity:1;transform:translateY(-50%) translateX(0);color:var(--gold)}
+@media(max-width:820px){.dotnav{display:none}}
 
 @media(max-width:820px){
   .frow{grid-template-columns:1fr}
@@ -302,8 +318,21 @@ footer .fbot{margin-top:34px;color:var(--muted2);font-size:11px;letter-spacing:.
   </div>
 </div>
 
+<!-- CHAPTER RAIL -->
+<nav class="dotnav" id="dotnav" aria-label="Section navigation">
+  <a href="#hero" data-cur><span class="dlabel">Home</span></a>
+  <a href="#approach" data-cur><span class="dlabel">Approach</span></a>
+  <a href="#services" data-cur><span class="dlabel">What We Build</span></a>
+  <a href="#protiq" data-cur><span class="dlabel">Protiq AI</span></a>
+  <a href="#industries" data-cur><span class="dlabel">Industries</span></a>
+  <a href="#proof" data-cur><span class="dlabel">Proof</span></a>
+  <a href="#about" data-cur><span class="dlabel">The Studio</span></a>
+  <a href="#contact" data-cur><span class="dlabel">Get Started</span></a>
+</nav>
+
 <!-- ============ HERO (robot split) ============ -->
 <section id="hero" class="chapter">
+  <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-top">
     <div class="chap-label"><span class="num">∞</span> For small businesses</div>
     <h1 class="hero-statement statement"><span class="ln"><span>Your whole business,</span></span><span class="ln"><span>in <span class="gr">one simple app.</span></span></span></h1>
@@ -500,6 +529,17 @@ function toggleMenu(){
 }
 menuBtn.addEventListener('click',toggleMenu);
 menuBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')toggleMenu();});
+
+/* ---------- CHAPTER RAIL (scroll-spy) ---------- */
+(function(){
+  const dotnav=document.getElementById('dotnav'); if(!dotnav)return;
+  const links=[...dotnav.querySelectorAll('a')]; const map={};
+  links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+  const spy=new IntersectionObserver(es=>{es.forEach(en=>{ if(en.isIntersecting){
+    const a=map[en.target.id]; if(!a)return; links.forEach(l=>l.classList.remove('active')); a.classList.add('active'); }});},
+    {rootMargin:'-50% 0px -50% 0px',threshold:0});
+  document.querySelectorAll('section.chapter').forEach(s=>spy.observe(s));
+})();
 
 /* ---------- PROGRESS ---------- */
 const progress=document.getElementById('progress');
